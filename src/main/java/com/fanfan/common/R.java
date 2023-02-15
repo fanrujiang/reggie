@@ -1,4 +1,4 @@
-package com.fanfan.bean;
+package com.fanfan.common;
 
 import lombok.Data;
 

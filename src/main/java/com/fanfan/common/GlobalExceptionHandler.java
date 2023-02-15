@@ -1,6 +1,5 @@
 package com.fanfan.common;
 
-import com.fanfan.bean.R;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

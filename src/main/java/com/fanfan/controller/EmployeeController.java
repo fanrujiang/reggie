@@ -1,19 +1,22 @@
 package com.fanfan.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Employee;
-import com.fanfan.bean.R;
+import com.fanfan.common.PageParam;
+import com.fanfan.common.R;
 import com.fanfan.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
+/**
+ * 员工
+ * @author Admin
+ */
 @Slf4j
 @RestController
 @RequestMapping("/employee")
@@ -74,6 +77,7 @@ public class EmployeeController {
         request.getSession().removeAttribute("employee");
         return R.success("退出成功");
     }
+
     /**
      * 添加员工
      *
@@ -96,5 +100,14 @@ public class EmployeeController {
         return R.success("新增员工成功");
     }
 
-
+    @GetMapping("/page")
+    public R page(PageParam pageParam) {
+        LambdaQueryWrapper<Employee> lqw = new LambdaQueryWrapper<>();
+        //1.1 设置条件:: 如果name 有值，就追加条件，否则就不追加。
+        lqw.like(pageParam.getName() != null, Employee::getName, pageParam.getName());
+        //2. 构建分页对象:: 设置查询第几页，每页查询多少条
+        Page<Employee> page = new Page<>(pageParam.getPage(), pageParam.getPageSize());
+        employeeService.page(page, lqw);
+        return R.success(page);
+    }
 }

@@ -1,7 +1,7 @@
 package com.fanfan.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.fanfan.bean.R;
+import com.fanfan.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 
