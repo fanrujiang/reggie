@@ -10,6 +10,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,6 +52,8 @@ public class EmployeeController {
 
         Employee emp = employeeService.login(employee);
 
+
+
         if (emp == null) {
             return R.error("登录失败");
         }
@@ -63,6 +66,12 @@ public class EmployeeController {
         return R.success(emp);
     }
 
+    /**
+     * 员工退出
+     * @param request
+     * @return
+     */
+    @PostMapping("/logout")
     public R<String> logout(HttpServletRequest request) {
         //清理Session中保存的员工id
         request.getSession().getAttribute("employee");
