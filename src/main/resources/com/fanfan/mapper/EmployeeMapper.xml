@@ -15,4 +15,13 @@
     <select id="getByUsernameAndPassword" resultType="com.fanfan.pojo.Employee">
         select *from employee where username=#{username} and password = #{password}
     </select>
+    <select id="findPage" resultType="com.fanfan.pojo.Employee">
+        select *from employee
+        <where>
+            <if test="name != null and name !='' ">
+                and name like concat ('%',#{name},'%')
+            </if>
+        </where>
+        order by update_time desc
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.fanfan.service;
 
+import com.fanfan.bean.PageBean;
 import com.fanfan.pojo.Employee;
 
 public interface EmployeeService {
@@ -19,4 +20,6 @@ public interface EmployeeService {
      * @return
      */
     void save(Employee employee);
+
+    PageBean page(int page, int pageSize,String name);
 }

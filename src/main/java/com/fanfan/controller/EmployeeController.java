@@ -1,16 +1,16 @@
 package com.fanfan.controller;
 
+import com.fanfan.bean.PageBean;
 import com.fanfan.common.R;
 import com.fanfan.pojo.Employee;
 import com.fanfan.service.EmployeeService;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,6 +20,22 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+
+    /**
+     * 员工信息分页查询
+     *
+     * @param page     当前查询页码
+     * @param pageSize 每页展示记录数
+     * @param name     员工姓名 - 可选参数
+     * @return
+     */
+    @GetMapping("/page")
+    public R<PageBean> page(int page, int pageSize, String name) {
+
+        PageBean pageBean =employeeService.page(page,pageSize,name);
+
+        return R.success(pageBean);
+    }
 
     /**
      * 员工登录
@@ -62,7 +78,7 @@ public class EmployeeController {
     @PostMapping
     public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
         Long uuid = (long) UUID.randomUUID().toString().replaceAll("-", "").hashCode();
-        System.out.println("uuid ="+uuid);
+        System.out.println("uuid =" + uuid);
         employee.setId(uuid);
         String password = DigestUtils.md5DigestAsHex("123456".getBytes());
         employee.setPassword(password);
