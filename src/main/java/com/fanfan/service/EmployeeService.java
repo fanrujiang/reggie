@@ -11,4 +11,12 @@ public interface EmployeeService {
      * @return
      */
     Employee login(Employee employee);
+
+
+    /**
+     * 新增员工
+     * @param employee
+     * @return
+     */
+    void save(Employee employee);
 }

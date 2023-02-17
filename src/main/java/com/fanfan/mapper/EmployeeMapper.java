@@ -2,11 +2,23 @@ package com.fanfan.mapper;
 
 import com.fanfan.pojo.Employee;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Service;
 
 @Mapper
 public interface EmployeeMapper {
 
-
+    /**
+     * 员工登录
+     *
+     * @param employee
+     * @return
+     */
     Employee getByUsernameAndPassword(Employee employee);
+
+    /**
+     * 新增员工
+     *
+     * @param employee
+     * @return
+     */
+    void insert(Employee employee);
 }

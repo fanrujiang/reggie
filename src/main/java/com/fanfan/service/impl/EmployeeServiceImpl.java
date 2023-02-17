@@ -24,4 +24,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return emp;
     }
+
+    /**
+     * 新增员工
+     *
+     * @param employee
+     * @return
+     */
+    @Override
+    public void save(Employee employee) {
+        employeeMapper.insert(employee);
+    }
 }
