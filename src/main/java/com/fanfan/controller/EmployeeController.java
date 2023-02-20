@@ -101,7 +101,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/page")
-    public R page(PageParam pageParam) {
+    public R<Page> page(PageParam pageParam) {
+
+
         LambdaQueryWrapper<Employee> lqw = new LambdaQueryWrapper<>();
         //1.1 设置条件:: 如果name 有值，就追加条件，否则就不追加。
         lqw.like(pageParam.getName() != null, Employee::getName, pageParam.getName());
