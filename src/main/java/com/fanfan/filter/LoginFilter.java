@@ -34,8 +34,14 @@ public class LoginFilter implements Filter{
         String[] urls = new String[]{
                 "/employee/login",
                 "/employee/logout",
-                "/backend/**",
-                "/front/**"
+                "/backend/page/login/login.html",
+                "/**/api/**",
+                "/**/api/**",
+                "/**/images/**",
+                "/**/js/**",
+                "/**/plugins/**",
+                "/**/styles/**",
+                "/**/*.ico"
         };
 
         //2、判断本次请求是否需要处理
@@ -58,7 +64,7 @@ public class LoginFilter implements Filter{
         log.info("用户未登录");
         //5、如果未登录则返回未登录结果，通过输出流方式向客户端页面响应数据
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
-        return;
+        response.sendRedirect("/backend/page/login/login.html");
 
     }
 
