@@ -6,10 +6,7 @@ import com.fanfan.bean.Category;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
 import com.fanfan.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 分类管理控制器
@@ -26,6 +23,7 @@ public class CategoryController {
 
     /**
      * 分类管理的分页查询
+     *
      * @param pageParam
      * @return
      */
@@ -38,8 +36,27 @@ public class CategoryController {
         //设置条件，根据sort 进行排序
         lqw.orderByAsc(Category::getSort);
 
-        categoryService.page(page,lqw);
+        categoryService.page(page, lqw);
 
         return R.success(page);
+    }
+
+    /**
+     * 新增分类
+     * @param category 菜品
+     * @return String 成功消息
+     */
+    @PostMapping
+    public R<String> save(@RequestBody Category category) {
+
+
+        categoryService.save(category);
+        return R.success("新增分类成功");
+    }
+
+    @DeleteMapping
+    public  R<String> deleteById(Long id){
+        categoryService.removeById(id);
+        return R.success("分类信息删除成功");
     }
 }
