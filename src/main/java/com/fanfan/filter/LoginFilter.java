@@ -1,6 +1,7 @@
 package com.fanfan.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.fanfan.common.BaseContext;
 import com.fanfan.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
@@ -57,6 +58,11 @@ public class LoginFilter implements Filter{
         //4、判断登录状态，如果已登录，则直接放行
         if(request.getSession().getAttribute("employee") != null){
             log.info("用户已登录，用户id为：{}",request.getSession().getAttribute("employee"));
+            //判定用户是否登录, 如果用户登录, 在放行之前, 获取HttpSession中的登录用户信息,
+            // 调用BaseContext的setCurrentId方法将当前登录用户ID存入ThreadLocal。
+            Long empId = (Long) request.getSession().getAttribute("employee");
+            BaseContext.setCurrentId(empId);
+
             filterChain.doFilter(request,response);
             return;
         }
