@@ -42,7 +42,8 @@ public class LoginFilter implements Filter{
                 "/**/js/**",
                 "/**/plugins/**",
                 "/**/styles/**",
-                "/**/*.ico"
+                "/**/*.ico",
+                "/common/**"
         };
 
         //2、判断本次请求是否需要处理
