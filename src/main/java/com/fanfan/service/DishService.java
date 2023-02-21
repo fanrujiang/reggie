@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fanfan.bean.Dish;
 import com.fanfan.dto.DishDto;
 
-import java.util.List;
-
 /**
  * @author Admin
  */
@@ -48,4 +46,11 @@ public interface DishService extends IService<Dish> {
      * @param ids
      */
     void onStatus(String ids);
+
+    /**
+     * 删除菜品
+     *
+     * @param ids
+     */
+    void delete(String ids);
 }

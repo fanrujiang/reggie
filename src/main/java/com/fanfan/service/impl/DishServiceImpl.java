@@ -20,8 +20,6 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
     @Autowired
     private DishFlavorService dishFlavorService;
-    @Autowired
-    private DishMapper dishMapper;
 
     /**
      * 添加菜品
@@ -94,7 +92,6 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
      * @param ids
      */
     @Override
-    @Transactional
     public void offStatus(String ids) {
         String[] idss = ids.split(",");
         for (String id : idss) {
@@ -117,6 +114,27 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             Dish dish = this.getById(id);
             dish.setStatus(1);
             this.updateById(dish);
+        }
+    }
+
+    /**
+     * 删除菜品
+     *
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void delete(String ids) {
+        String[] idss = ids.split(",");
+        for (String id : idss) {
+            this.removeById(id);
+            LambdaQueryWrapper<DishFlavor> lqw = new LambdaQueryWrapper<>();
+            lqw.eq(DishFlavor::getDishId, id);
+            List<DishFlavor> list = dishFlavorService.list(lqw);
+            for (DishFlavor dishFlavor : list) {
+                Long flavorId = dishFlavor.getId();
+                dishFlavorService.removeById(flavorId);
+            }
         }
     }
 }

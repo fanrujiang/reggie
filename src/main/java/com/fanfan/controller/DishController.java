@@ -10,9 +10,6 @@ import com.fanfan.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * 菜品
  *
@@ -113,6 +110,13 @@ public class DishController {
         log.info(ids);
         dishService.onStatus(ids);
         return R.success("启售成功");
+    }
+
+    @DeleteMapping
+    public R<String> delete(String ids) {
+        log.info(ids);
+        dishService.delete(ids);
+        return R.success("删除成功");
     }
 
 }
