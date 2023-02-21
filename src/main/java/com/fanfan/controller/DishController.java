@@ -3,9 +3,9 @@ package com.fanfan.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Dish;
-import com.fanfan.bean.Employee;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
+import com.fanfan.service.DishFlavorService;
 import com.fanfan.service.DishService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/dish")
 public class DishController {
-    final  DishService dishService;
+    private final DishService dishService;
+    private final DishFlavorService dishFlavorService;
 
-    private  DishController(DishService dishService) {
+    private DishController(DishService dishService, DishFlavorService dishFlavorService) {
         this.dishService = dishService;
+        this.dishFlavorService = dishFlavorService;
     }
 
     @GetMapping("/page")

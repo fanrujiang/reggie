@@ -34,6 +34,7 @@ public class CommonController {
         log.info(file.toString());
         //获取原始文件名
         String originalFilename = file.getOriginalFilename();
+        assert originalFilename != null;
         String su = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileName = UUID.randomUUID() + su;
         //创建要保存的目录

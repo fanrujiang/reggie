@@ -8,6 +8,8 @@ import com.fanfan.common.R;
 import com.fanfan.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 分类管理控制器
  */
@@ -55,6 +57,12 @@ public class CategoryController {
         return R.success("新增分类成功");
     }
 
+    /**
+     * 删除分类
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping
     public R<String> deleteById(Long id) {
         //categoryService.removeById(id);
@@ -73,4 +81,22 @@ public class CategoryController {
         categoryService.updateById(category);
         return R.success("修改成功");
     }
+
+    /**
+     * 菜品和套餐的分类查询
+     *
+     * @param category 菜品和套餐
+     * @return List
+     */
+    @GetMapping("/list")
+    public R<List<Category>> list(Category category) {
+        //条件构造器
+        LambdaQueryWrapper<Category> lqw = new LambdaQueryWrapper<>();
+        //设置条件
+        lqw.eq(category.getType() != null, Category::getType, category.getType());
+        lqw.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+        List<Category> list = categoryService.list(lqw);
+        return R.success(list);
+    }
+
 }
