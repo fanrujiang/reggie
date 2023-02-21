@@ -5,17 +5,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Dish;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
+import com.fanfan.dto.DishDto;
 import com.fanfan.service.DishFlavorService;
 import com.fanfan.service.DishService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 菜品
  *
  * @author Admin
  */
+@Slf4j
 @RestController
 @RequestMapping("/dish")
 public class DishController {
@@ -38,4 +39,20 @@ public class DishController {
         return R.success(page);
 
     }
+
+    /**
+     * 新增菜品
+     *
+     * @param dishDto
+     * @return
+     */
+    @PostMapping
+    public R<String> save(@RequestBody DishDto dishDto) {
+        log.info(dishDto.toString());
+
+        dishService.add(dishDto);
+
+        return R.success("成功");
+    }
+
 }
