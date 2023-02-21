@@ -55,4 +55,15 @@ public class DishController {
         return R.success("成功");
     }
 
+    /**
+     * 根据id查询菜品信息和对应的口味信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public R<DishDto> getById(@PathVariable Long id){
+        DishDto byIdWithFlavor = dishService.getByIdWithFlavor(id);
+        return R.success(byIdWithFlavor);
+    }
+
 }

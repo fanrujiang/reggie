@@ -10,6 +10,7 @@ import com.fanfan.service.CategoryService;
 import com.fanfan.service.DishService;
 import com.fanfan.service.SetmealService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
@@ -27,6 +28,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @param id
      */
     @Override
+    @Transactional
     public void remove(Long id) {
         LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
         dishLambdaQueryWrapper.eq(Dish::getCategoryId, id);
