@@ -20,6 +20,8 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
     @Autowired
     private DishFlavorService dishFlavorService;
+    @Autowired
+    private DishMapper dishMapper;
 
     /**
      * 添加菜品
@@ -74,7 +76,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         this.updateById(dishDto);
         //清理对应的口味信息
         LambdaQueryWrapper<DishFlavor> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(DishFlavor::getDishId,dishDto.getId());
+        lqw.eq(DishFlavor::getDishId, dishDto.getId());
         dishFlavorService.remove(lqw);
 
         //添加新提交的口味信息
@@ -83,6 +85,38 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             flavor.setDishId(dishDto.getId());
 
             dishFlavorService.save(flavor);
+        }
+    }
+
+    /**
+     * 停售菜品
+     *
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void offStatus(String ids) {
+        String[] idss = ids.split(",");
+        for (String id : idss) {
+            Dish dish = this.getById(id);
+            dish.setStatus(0);
+            this.updateById(dish);
+        }
+
+    }
+
+    /**
+     * 启售菜品
+     *
+     * @param ids
+     */
+    @Override
+    public void onStatus(String ids) {
+        String[] idss = ids.split(",");
+        for (String id : idss) {
+            Dish dish = this.getById(id);
+            dish.setStatus(1);
+            this.updateById(dish);
         }
     }
 }
