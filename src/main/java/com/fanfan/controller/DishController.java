@@ -33,6 +33,7 @@ public class DishController {
         LambdaQueryWrapper<Dish> lqw = new LambdaQueryWrapper<>();
         //1.1 设置条件:: 如果name 有值，就追加条件，否则就不追加。
         lqw.like(pageParam.getName() != null, Dish::getName, pageParam.getName());
+        lqw.orderByDesc(Dish::getUpdateTime);
         //2. 构建分页对象:: 设置查询第几页，每页查询多少条
         Page<Dish> page = new Page<>(pageParam.getPage(), pageParam.getPageSize());
         dishService.page(page, lqw);
@@ -57,13 +58,21 @@ public class DishController {
 
     /**
      * 根据id查询菜品信息和对应的口味信息
+     *
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    public R<DishDto> getById(@PathVariable Long id){
+    public R<DishDto> getById(@PathVariable Long id) {
         DishDto byIdWithFlavor = dishService.getByIdWithFlavor(id);
         return R.success(byIdWithFlavor);
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody DishDto dishDto) {
+
+        dishService.updateWithFlavor(dishDto);
+        return R.success("修改成功");
     }
 
 }

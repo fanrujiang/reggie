@@ -61,4 +61,28 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         dishDto.setFlavors(flavors);
         return dishDto;
     }
+
+    /**
+     * 修改菜品
+     *
+     * @param dishDto
+     */
+    @Override
+    @Transactional
+    public void updateWithFlavor(DishDto dishDto) {
+        //先更新菜品信息
+        this.updateById(dishDto);
+        //清理对应的口味信息
+        LambdaQueryWrapper<DishFlavor> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(DishFlavor::getDishId,dishDto.getId());
+        dishFlavorService.remove(lqw);
+
+        //添加新提交的口味信息
+        List<DishFlavor> flavors = dishDto.getFlavors();
+        for (DishFlavor flavor : flavors) {
+            flavor.setDishId(dishDto.getId());
+
+            dishFlavorService.save(flavor);
+        }
+    }
 }
