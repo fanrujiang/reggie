@@ -112,7 +112,7 @@ public class DishController {
     public R<String> ondateStatus(String ids) {
         log.info(ids);
         dishService.onStatus(ids);
-        return R.success("停售成功");
+        return R.success("启售成功");
     }
 
 }
