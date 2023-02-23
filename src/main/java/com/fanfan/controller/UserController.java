@@ -32,6 +32,10 @@ public class UserController {
 
     @GetMapping("/code")
     public R<String> getCode(String phone , HttpSession session){
+
+        if (ObjectUtils.isEmpty(phone)){
+            return R.error("请输入手机号");
+        }
         //1. 生成验证码
         String code = ValidateCodeUtils.generateValidateCode4String(4);
         //2. 给这个手机号发短信
