@@ -1,5 +1,6 @@
 package com.fanfan.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fanfan.bean.Setmeal;
 import com.fanfan.bean.SetmealDish;
@@ -71,6 +72,27 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
             Setmeal setmeal = this.getById(id);
             setmeal.setStatus(1);
             this.updateById(setmeal);
+        }
+    }
+
+    /**
+     * 删除套餐
+     *
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void delete(String ids) {
+        String[] idss = ids.split(",");
+        for (String id : idss) {
+            this.removeById(id);
+            LambdaQueryWrapper<SetmealDish> lqw = new LambdaQueryWrapper<>();
+            lqw.eq(SetmealDish::getSetmealId, id);
+            List<SetmealDish> list = setmealDishService.list(lqw);
+            for (SetmealDish setmealDish : list) {
+                Long setmealDishId = setmealDish.getId();
+                setmealDishService.removeById(setmealDishId);
+            }
         }
     }
 }

@@ -69,6 +69,7 @@ public class SetmealController {
         setmealService.offStatus(ids);
         return R.success("停售成功");
     }
+
     /**
      * 启售套餐
      *
@@ -80,5 +81,18 @@ public class SetmealController {
         log.info(ids);
         setmealService.onStatus(ids);
         return R.success("启售成功");
+    }
+
+    /**
+     * 删除套餐
+     *
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    public R<String> delete(String ids) {
+        log.info(ids);
+        setmealService.delete(ids);
+        return R.success("删除成功");
     }
 }

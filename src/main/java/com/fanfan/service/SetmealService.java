@@ -28,4 +28,10 @@ public interface SetmealService extends IService<Setmeal> {
      * @return
      */
     void onStatus(String ids);
+
+    /**
+     * 删除套餐
+     * @param ids
+     */
+    void delete(String ids);
 }
