@@ -37,7 +37,7 @@ public class UserController {
         //2. 给这个手机号发短信
         //SMSUtils.sendMessage("签名", "模板" , phone , code);
         //3. 把验证码保存到session作用域，以便一会登录，可以判断验证码对不对！
-        session.setAttribute(phone, code);
+        session.setAttribute("code", code);
         //真实情况：
         //return R.success("短信验证码已发送！");
 
@@ -59,7 +59,7 @@ public class UserController {
         //获取验证码
         String code = map.get("code").toString();
         //从Session中获取保存的验证码
-        Object codeInSession = session.getAttribute(phone);
+        Object codeInSession = session.getAttribute("code");
 
         //进行验证码的比对（页面提交的验证码和Session中保存的验证码比对）
         if(codeInSession != null && codeInSession.equals(code)){
