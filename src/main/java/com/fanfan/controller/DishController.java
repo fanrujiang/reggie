@@ -2,15 +2,19 @@ package com.fanfan.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fanfan.bean.Category;
 import com.fanfan.bean.Dish;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
 import com.fanfan.dto.DishDto;
+import com.fanfan.service.CategoryService;
 import com.fanfan.service.DishService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 菜品
@@ -22,11 +26,13 @@ import java.util.List;
 @RequestMapping("/dish")
 public class DishController {
     private final DishService dishService;
+    private CategoryService categoryService;
 
 
-    private DishController(DishService dishService) {
+    private DishController(DishService dishService, CategoryService categoryService) {
         this.dishService = dishService;
 
+        this.categoryService = categoryService;
     }
 
     /**
@@ -42,9 +48,27 @@ public class DishController {
         lqw.like(pageParam.getName() != null, Dish::getName, pageParam.getName());
         lqw.orderByDesc(Dish::getUpdateTime);
         //2. 构建分页对象:: 设置查询第几页，每页查询多少条
-        Page<Dish> page = new Page<>(pageParam.getPage(), pageParam.getPageSize());
-        dishService.page(page, lqw);
-        return R.success(page);
+        Page<Dish> pageInfo = new Page<>(pageParam.getPage(), pageParam.getPageSize());
+        dishService.page(pageInfo, lqw);
+        Page<DishDto> dishDtoPage = new Page<>();
+        BeanUtils.copyProperties(pageInfo,dishDtoPage,"records");
+        List<Dish> records = pageInfo.getRecords();
+        List<DishDto> list = records.stream().map((item) -> {
+
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(item, dishDto);
+            Long categoryId = item.getCategoryId();//分类id
+            //根据id查询分类对象
+            Category category = categoryService.getById(categoryId);
+
+            if (category != null) {
+                String categoryName = category.getName();
+                dishDto.setCategoryName(categoryName);
+            }
+            return dishDto;
+        }).collect(Collectors.toList());
+        dishDtoPage.setRecords(list);
+        return R.success(dishDtoPage);
 
     }
 
