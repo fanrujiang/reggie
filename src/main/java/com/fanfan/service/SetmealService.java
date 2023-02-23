@@ -34,4 +34,6 @@ public interface SetmealService extends IService<Setmeal> {
      * @param ids
      */
     void delete(String ids);
+
+    void updateSetmeal(SetmealDto setmealDto);
 }

@@ -1,12 +1,10 @@
 package com.fanfan.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Category;
 import com.fanfan.bean.Setmeal;
 import com.fanfan.bean.SetmealDish;
-import com.fanfan.common.CustomException;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
 import com.fanfan.dto.SetmealDto;
@@ -122,7 +120,7 @@ public class SetmealController {
         Setmeal setmeal = setmealService.getById(id);
         LambdaQueryWrapper<SetmealDish> lqw = new LambdaQueryWrapper<>();
         //设置条件
-        lqw.eq(SetmealDish::getSetmealId,id);
+        lqw.eq(SetmealDish::getSetmealId, id);
         //查询此套餐的所有菜品
         List<SetmealDish> setmealDishes = setmealDishService.list(lqw);
         //查询此套餐所属的分类
@@ -136,5 +134,11 @@ public class SetmealController {
         //设置此套餐 菜品分类的名字
         setmealDto.setCategoryName(category.getName());
         return R.success(setmealDto);
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody SetmealDto setmealDto) {
+        setmealService.updateSetmeal(setmealDto);
+        return R.success("修改成功");
     }
 }
