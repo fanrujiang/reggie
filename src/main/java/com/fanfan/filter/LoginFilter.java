@@ -46,7 +46,7 @@ public class LoginFilter implements Filter {
                 "/**/*.ico",
                 "/common/**",
                 "/user/login",
-                "/user/sendMsg"
+                "/user/code"
         };
 
         //2、判断本次请求是否需要处理
