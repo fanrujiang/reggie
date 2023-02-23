@@ -10,6 +10,8 @@ import com.fanfan.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 菜品
  *
@@ -117,6 +119,24 @@ public class DishController {
         log.info(ids);
         dishService.delete(ids);
         return R.success("删除成功");
+    }
+
+    /**
+     * 根据条件查询菜品对应数据
+     *
+     * @param dish
+     * @return R
+     */
+    @GetMapping("/list")
+    public R<List<Dish>> list(Dish dish) {
+        //条件构造器
+        LambdaQueryWrapper<Dish> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
+        lqw.eq(Dish::getStatus, 1);
+        lqw.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+
+        List<Dish> list = dishService.list(lqw);
+        return R.success(list);
     }
 
 }

@@ -5,15 +5,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Setmeal;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
+import com.fanfan.dto.SetmealDto;
 import com.fanfan.service.SetmealService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 套餐管理器
  */
 @RestController
+@Slf4j
 @RequestMapping("/setmeal")
 public class SetmealController {
 
@@ -39,6 +40,20 @@ public class SetmealController {
         setmealService.page(page, lqw);
         return R.success(page);
 
+    }
+
+    /**
+     * 新增套餐
+     *
+     * @param setmealDto
+     * @return
+     */
+    @PostMapping
+    public R<String> save(@RequestBody SetmealDto setmealDto) {
+        log.info("套餐信息{}", setmealDto);
+        setmealService.saveWithDish(setmealDto);
+
+        return R.success("新增套餐成功");
     }
 
 }
