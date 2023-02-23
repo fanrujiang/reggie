@@ -1,14 +1,23 @@
 package com.fanfan.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fanfan.bean.Category;
 import com.fanfan.bean.Setmeal;
+import com.fanfan.bean.SetmealDish;
+import com.fanfan.common.CustomException;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
 import com.fanfan.dto.SetmealDto;
+import com.fanfan.service.CategoryService;
+import com.fanfan.service.SetmealDishService;
 import com.fanfan.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 套餐管理器
@@ -19,9 +28,14 @@ import org.springframework.web.bind.annotation.*;
 public class SetmealController {
 
     private final SetmealService setmealService;
+    private final SetmealDishService setmealDishService;
 
-    public SetmealController(SetmealService setmealService) {
+    private final CategoryService categoryService;
+
+    public SetmealController(SetmealService setmealService, SetmealDishService setmealDishService, CategoryService categoryService) {
         this.setmealService = setmealService;
+        this.setmealDishService = setmealDishService;
+        this.categoryService = categoryService;
     }
 
     /**
@@ -94,5 +108,33 @@ public class SetmealController {
         log.info(ids);
         setmealService.delete(ids);
         return R.success("删除成功");
+    }
+
+    /**
+     * 根据id查询套餐
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("{id}")
+    public R<SetmealDto> getById(@PathVariable("id") Long id) {
+        //根据id查询当前套餐
+        Setmeal setmeal = setmealService.getById(id);
+        LambdaQueryWrapper<SetmealDish> lqw = new LambdaQueryWrapper<>();
+        //设置条件
+        lqw.eq(SetmealDish::getSetmealId,id);
+        //查询此套餐的所有菜品
+        List<SetmealDish> setmealDishes = setmealDishService.list(lqw);
+        //查询此套餐所属的分类
+        Category category = categoryService.getById(setmeal.getCategoryId());
+        //new 一个SetmealDto的对象
+        SetmealDto setmealDto = new SetmealDto();
+        //把setmeal的值对应复制给setmealDto
+        BeanUtils.copyProperties(setmeal, setmealDto);
+        //把此套餐的所有菜品装入Dto中
+        setmealDto.setSetmealDishes(setmealDishes);
+        //设置此套餐 菜品分类的名字
+        setmealDto.setCategoryName(category.getName());
+        return R.success(setmealDto);
     }
 }
