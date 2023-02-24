@@ -7,11 +7,13 @@ import com.fanfan.common.BaseContext;
 import com.fanfan.common.CustomException;
 import com.fanfan.common.R;
 import com.fanfan.service.ShoppingCartService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/shoppingCart")
 public class ShoppingCartController {
@@ -84,5 +86,31 @@ public class ShoppingCartController {
         lqw.eq(BaseContext.getCurrentId() != null, ShoppingCart::getUserId, BaseContext.getCurrentId());
         shoppingCartService.remove(lqw);
         return R.success("清空成功");
+    }
+
+    /**
+     * 减少购物车中的某个菜品
+     *
+     * @return
+     */
+    @PostMapping("/sub")
+    public R<ShoppingCart> sub(@RequestBody ShoppingCart shoppingCart) {
+        LambdaQueryWrapper<ShoppingCart> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(ShoppingCart::getDishId, shoppingCart.getDishId());
+        lqw.eq(ShoppingCart::getUserId, BaseContext.getCurrentId());
+        ShoppingCart one = shoppingCartService.getOne(lqw);
+        log.info(String.valueOf(one));
+        Integer number = one.getNumber();
+
+        if (number > 1) {
+            one.setNumber(number - 1);
+            shoppingCartService.updateById(one);
+            return R.success(one);
+        } else if (number == 1) {
+            shoppingCartService.removeById(one);
+            return R.success(null);
+        } else {
+            return R.error("购物车无此菜品");
+        }
     }
 }

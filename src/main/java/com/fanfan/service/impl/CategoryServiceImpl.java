@@ -15,11 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
     private final DishService dishService;
-    private final SetmealService setmealService;
 
-    public CategoryServiceImpl(DishService dishService, SetmealService setmealService) {
+
+    public CategoryServiceImpl(DishService dishService) {
         this.dishService = dishService;
-        this.setmealService = setmealService;
     }
 
     /**
