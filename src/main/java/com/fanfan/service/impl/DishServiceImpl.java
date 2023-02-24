@@ -137,4 +137,14 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             }
         }
     }
+
+    @Override
+    public void status(int status, String ids) {
+        String[] idss = ids.split(",");
+        for (String id : idss) {
+            Dish dish = this.getById(id);
+            dish.setStatus(status);
+            this.updateById(dish);
+        }
+    }
 }

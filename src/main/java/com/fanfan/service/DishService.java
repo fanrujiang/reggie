@@ -53,4 +53,6 @@ public interface DishService extends IService<Dish> {
      * @param ids
      */
     void delete(String ids);
+
+    void status(int status, String ids);
 }

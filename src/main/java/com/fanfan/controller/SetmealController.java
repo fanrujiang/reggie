@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 套餐管理器
@@ -47,10 +48,24 @@ public class SetmealController {
         LambdaQueryWrapper<Setmeal> lqw = new LambdaQueryWrapper<>();
         //设置条件
         lqw.like(pageParam.getName() != null, Setmeal::getName, pageParam.getName());
-        Page<Setmeal> page = new Page<>(pageParam.getPage(), pageParam.getPageSize());
+        Page<Setmeal> pageInfo = new Page<>(pageParam.getPage(), pageParam.getPageSize());
         //调用service进行查询
-        setmealService.page(page, lqw);
-        return R.success(page);
+        setmealService.page(pageInfo, lqw);
+        Page<SetmealDto> pageDto = new Page<>();
+        BeanUtils.copyProperties(pageInfo, pageDto, "records");
+        List<Setmeal> records = pageInfo.getRecords();
+
+        List<SetmealDto> collect = records.stream().map((item) -> {
+            SetmealDto setmealDto = new SetmealDto();
+            BeanUtils.copyProperties(item, setmealDto);
+            Category category = categoryService.getById(item.getCategoryId());
+            setmealDto.setCategoryName(category.getName());
+            return setmealDto;
+        }).collect(Collectors.toList());
+
+        pageDto.setRecords(collect);
+
+        return R.success(pageDto);
 
     }
 
@@ -146,5 +161,20 @@ public class SetmealController {
     public R<String> update(@RequestBody SetmealDto setmealDto) {
         setmealService.updateSetmeal(setmealDto);
         return R.success("修改成功");
+    }
+
+    /**
+     * 根据分类id查询套餐信息
+     *
+     * @param setmeal
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Setmeal setmeal) {
+        LambdaQueryWrapper<Setmeal> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(Setmeal::getCategoryId, setmeal.getCategoryId());
+        List<Setmeal> list = setmealService.list(lqw);
+        return R.success(list);
+
     }
 }

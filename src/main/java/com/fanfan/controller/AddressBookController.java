@@ -59,27 +59,34 @@ public class AddressBookController {
 
     @PutMapping("/default")
     public R<String> setDefault(@RequestBody AddressBook addressBook) {
-        LambdaUpdateWrapper<AddressBook> lqw = new LambdaUpdateWrapper<>();
-        lqw.eq(AddressBook::getUserId, BaseContext.getCurrentId());
-        lqw.set(AddressBook::getIsDefault, 0);
-        addressBookService.update(lqw);
+        LambdaUpdateWrapper<AddressBook> luw = new LambdaUpdateWrapper<>();
+        luw.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+        luw.set(AddressBook::getIsDefault, 0);
+        addressBookService.update(luw);
 
         addressBook.setIsDefault(1);
         addressBookService.updateById(addressBook);
 
         return R.success("修改成功");
     }
+
     /**
      * 根据id查询地址
      */
     @GetMapping("/{id}")
-    public R get(@PathVariable Long id) {
+    public R<AddressBook> get(@PathVariable Long id) {
         AddressBook addressBook = addressBookService.getById(id);
         if (addressBook != null) {
             return R.success(addressBook);
         } else {
             return R.error("没有找到该对象");
         }
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody AddressBook addressBook) {
+        addressBookService.updateById(addressBook);
+        return R.success("地址修改成功");
     }
 
 

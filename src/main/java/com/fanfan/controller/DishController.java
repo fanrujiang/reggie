@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Category;
 import com.fanfan.bean.Dish;
+import com.fanfan.bean.DishFlavor;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
 import com.fanfan.dto.DishDto;
 import com.fanfan.service.CategoryService;
+import com.fanfan.service.DishFlavorService;
 import com.fanfan.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -28,11 +30,14 @@ public class DishController {
     private final DishService dishService;
     private CategoryService categoryService;
 
+    private DishFlavorService dishFlavorService;
 
-    private DishController(DishService dishService, CategoryService categoryService) {
+
+    private DishController(DishService dishService, CategoryService categoryService, DishFlavorService dishFlavorService) {
         this.dishService = dishService;
 
         this.categoryService = categoryService;
+        this.dishFlavorService = dishFlavorService;
     }
 
     /**
@@ -51,7 +56,7 @@ public class DishController {
         Page<Dish> pageInfo = new Page<>(pageParam.getPage(), pageParam.getPageSize());
         dishService.page(pageInfo, lqw);
         Page<DishDto> dishDtoPage = new Page<>();
-        BeanUtils.copyProperties(pageInfo,dishDtoPage,"records");
+        BeanUtils.copyProperties(pageInfo, dishDtoPage, "records");
         List<Dish> records = pageInfo.getRecords();
         List<DishDto> list = records.stream().map((item) -> {
 
@@ -112,30 +117,12 @@ public class DishController {
         return R.success("修改成功");
     }
 
-    /**
-     * 停售菜品
-     *
-     * @param ids
-     * @return
-     */
-    @PostMapping("/status/0")   //xxxx/status/0?1236578241871268
-    public R<String> offStatus(String ids) {
-        log.info(ids);
-        dishService.offStatus(ids);
-        return R.success("停售成功");
-    }
 
-    /**
-     * 启售菜品
-     *
-     * @param ids
-     * @return
-     */
-    @PostMapping("/status/1")   //xxxx/status/0?1236578241871268
-    public R<String> onStatus(String ids) {
-        log.info(ids);
-        dishService.onStatus(ids);
-        return R.success("启售成功");
+
+    @PostMapping("/status/{status}")
+    public R<String> status(@PathVariable("status") int status, String ids){
+        dishService.status(status,ids);
+        return R.success("修改成功");
     }
 
     @DeleteMapping
@@ -152,7 +139,7 @@ public class DishController {
      * @return R
      */
     @GetMapping("/list")
-    public R<List<Dish>> list(Dish dish) {
+    public R<List<DishDto>> list(Dish dish) {
         //条件构造器
         LambdaQueryWrapper<Dish> lqw = new LambdaQueryWrapper<>();
         lqw.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
@@ -160,7 +147,26 @@ public class DishController {
         lqw.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
 
         List<Dish> list = dishService.list(lqw);
-        return R.success(list);
+
+        List<DishDto> dishDtoList = list.stream().map((item) -> {
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(item, dishDto);
+            Long categoryId = item.getCategoryId();
+            Category category = categoryService.getById(categoryId);
+            if (category != null) {
+                dishDto.setCategoryName(category.getName());
+            }
+            Long dishId = item.getId();
+            LambdaQueryWrapper<DishFlavor> dishLqw = new LambdaQueryWrapper<>();
+            dishLqw.eq(DishFlavor::getDishId, dishId);
+            List<DishFlavor> dishFlavorList = dishFlavorService.list(dishLqw);
+            dishDto.setFlavors(dishFlavorList);
+            return dishDto;
+
+        }).collect(Collectors.toList());
+
+
+        return R.success(dishDtoList);
     }
 
 }
