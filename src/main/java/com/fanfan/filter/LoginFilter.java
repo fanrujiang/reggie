@@ -38,7 +38,6 @@ public class LoginFilter implements Filter {
                 "/employee/logout",
                 "/**/login.html",
                 "/**/api/**",
-                "/**/api/**",
                 "/**/images/**",
                 "/**/js/**",
                 "/**/plugins/**",
