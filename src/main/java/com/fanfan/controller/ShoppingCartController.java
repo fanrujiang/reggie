@@ -7,7 +7,6 @@ import com.fanfan.common.BaseContext;
 import com.fanfan.common.CustomException;
 import com.fanfan.common.R;
 import com.fanfan.service.ShoppingCartService;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -74,4 +73,16 @@ public class ShoppingCartController {
         return R.success(shoppingOne);
     }
 
+    /**
+     * 清空购物车
+     *
+     * @return
+     */
+    @DeleteMapping("/clean")
+    public R<String> clean() {
+        LambdaQueryWrapper<ShoppingCart> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(BaseContext.getCurrentId() != null, ShoppingCart::getUserId, BaseContext.getCurrentId());
+        shoppingCartService.remove(lqw);
+        return R.success("清空成功");
+    }
 }
