@@ -58,7 +58,7 @@ public class AddressBookController {
      */
 
     @PutMapping("/default")
-    public R<String> setDefault(@RequestBody AddressBook addressBook) {
+    public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
         LambdaUpdateWrapper<AddressBook> luw = new LambdaUpdateWrapper<>();
         luw.eq(AddressBook::getUserId, BaseContext.getCurrentId());
         luw.set(AddressBook::getIsDefault, 0);
@@ -67,8 +67,28 @@ public class AddressBookController {
         addressBook.setIsDefault(1);
         addressBookService.updateById(addressBook);
 
-        return R.success("修改成功");
+        return R.success(addressBook);
     }
+
+    /**
+     * 查询默认地址
+     *
+     * @return
+     */
+    @GetMapping("/default")
+    public R<AddressBook> setDefault() {
+        LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+        queryWrapper.eq(AddressBook::getIsDefault, 1);
+        AddressBook addressBook = addressBookService.getOne(queryWrapper);
+        if (addressBook != null) {
+            return R.success(addressBook);
+        }
+        else {
+            return R.error("查询失败");
+        }
+    }
+
 
     /**
      * 根据id查询地址

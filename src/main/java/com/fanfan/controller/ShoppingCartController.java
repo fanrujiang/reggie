@@ -8,6 +8,7 @@ import com.fanfan.common.CustomException;
 import com.fanfan.common.R;
 import com.fanfan.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -96,7 +97,8 @@ public class ShoppingCartController {
     @PostMapping("/sub")
     public R<ShoppingCart> sub(@RequestBody ShoppingCart shoppingCart) {
         LambdaQueryWrapper<ShoppingCart> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(ShoppingCart::getDishId, shoppingCart.getDishId());
+        lqw.eq(!ObjectUtils.isEmpty(shoppingCart.getDishId()),ShoppingCart::getDishId, shoppingCart.getDishId());
+        lqw.eq(!ObjectUtils.isEmpty(shoppingCart.getSetmealId()),ShoppingCart::getSetmealId,shoppingCart.getSetmealId());
         lqw.eq(ShoppingCart::getUserId, BaseContext.getCurrentId());
         ShoppingCart one = shoppingCartService.getOne(lqw);
         log.info(String.valueOf(one));
@@ -107,8 +109,9 @@ public class ShoppingCartController {
             shoppingCartService.updateById(one);
             return R.success(one);
         } else if (number == 1) {
-            shoppingCartService.removeById(one);
-            return R.success(null);
+            shoppingCartService.removeById(one.getId());
+            one.setNumber(0);
+            return R.success(one);
         } else {
             return R.error("购物车无此菜品");
         }

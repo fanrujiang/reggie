@@ -151,6 +151,11 @@ public class SetmealController {
         return R.success(setmealDto);
     }
 
+    @GetMapping("/dish/{id}")
+    public R<SetmealDto> getById2(@PathVariable("id") Long id) {
+        return this.getById(id);
+    }
+
     /**
      * 修改套餐
      *

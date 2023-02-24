@@ -83,11 +83,7 @@ public class LoginFilter implements Filter {
 
         log.info("用户未登录");
 
-        //获取用户所在网址，截取网址中的字符 判断 用户想登录后台还是用户端
-        String url = String.valueOf(request.getRequestURL()).substring(8);
-        System.out.println("url = " + url);
-        String[] split = url.split("/");
-        if (Objects.equals(split[1], "backend")) {
+        if (requestURI.contains("/backend")) {
             //5、如果未登录则返回未登录结果，通过输出流方式向客户端页面响应数据
             response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
             response.sendRedirect("/backend/page/login/login.html");
