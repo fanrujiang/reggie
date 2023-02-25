@@ -15,5 +15,6 @@ public class DishDto extends Dish {
 
     private Integer copies;
 
+    //销售量
     private Integer saleNum;
 }

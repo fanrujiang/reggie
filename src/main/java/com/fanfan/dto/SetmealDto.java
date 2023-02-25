@@ -13,5 +13,6 @@ public class SetmealDto extends Setmeal {
     private List<SetmealDish> setmealDishes;
 
     private String categoryName;
+    //销售量
     private Integer saleNum;
 }
