@@ -3,6 +3,7 @@ package com.fanfan.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Category;
+import com.fanfan.common.CustomException;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
 import com.fanfan.service.CategoryService;
@@ -51,8 +52,12 @@ public class CategoryController {
      */
     @PostMapping
     public R<String> save(@RequestBody Category category) {
-
-
+        LambdaQueryWrapper<Category> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(Category::getName,category.getName());
+        int count = categoryService.count(lqw);
+        if (count>0){
+            throw new CustomException(category.getName()+"已存在");
+        }
         categoryService.save(category);
         return R.success("新增分类成功");
     }

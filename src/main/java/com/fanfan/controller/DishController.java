@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Category;
 import com.fanfan.bean.Dish;
 import com.fanfan.bean.DishFlavor;
+import com.fanfan.bean.OrderDetail;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
 import com.fanfan.dto.DishDto;
 import com.fanfan.service.CategoryService;
 import com.fanfan.service.DishFlavorService;
 import com.fanfan.service.DishService;
+import com.fanfan.service.OrderDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +34,15 @@ public class DishController {
 
     private DishFlavorService dishFlavorService;
 
+    private OrderDetailService orderDetailService;
 
-    private DishController(DishService dishService, CategoryService categoryService, DishFlavorService dishFlavorService) {
+
+    private DishController(DishService dishService, CategoryService categoryService, DishFlavorService dishFlavorService, OrderDetailService orderDetailService) {
         this.dishService = dishService;
 
         this.categoryService = categoryService;
         this.dishFlavorService = dishFlavorService;
+        this.orderDetailService = orderDetailService;
     }
 
     /**
@@ -161,6 +166,13 @@ public class DishController {
             dishLqw.eq(DishFlavor::getDishId, dishId);
             List<DishFlavor> dishFlavorList = dishFlavorService.list(dishLqw);
             dishDto.setFlavors(dishFlavorList);
+
+            //获取菜品的销量
+            LambdaQueryWrapper<OrderDetail> olqw = new LambdaQueryWrapper<>();
+            olqw.eq(OrderDetail::getDishId,dishId);
+            int count = orderDetailService.count(olqw);
+            //月售多少单
+            dishDto.setSaleNum(count);
             return dishDto;
 
         }).collect(Collectors.toList());

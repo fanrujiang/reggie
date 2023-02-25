@@ -3,18 +3,22 @@ package com.fanfan.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fanfan.bean.Category;
+import com.fanfan.bean.OrderDetail;
 import com.fanfan.bean.Setmeal;
 import com.fanfan.bean.SetmealDish;
 import com.fanfan.common.PageParam;
 import com.fanfan.common.R;
 import com.fanfan.dto.SetmealDto;
 import com.fanfan.service.CategoryService;
+import com.fanfan.service.OrderDetailService;
 import com.fanfan.service.SetmealDishService;
 import com.fanfan.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,13 +32,14 @@ public class SetmealController {
 
     private final SetmealService setmealService;
     private final SetmealDishService setmealDishService;
-
     private final CategoryService categoryService;
+    private final OrderDetailService orderDetailService;
 
-    public SetmealController(SetmealService setmealService, SetmealDishService setmealDishService, CategoryService categoryService) {
+    public SetmealController(SetmealService setmealService, SetmealDishService setmealDishService, CategoryService categoryService, OrderDetailService orderDetailService) {
         this.setmealService = setmealService;
         this.setmealDishService = setmealDishService;
         this.categoryService = categoryService;
+        this.orderDetailService = orderDetailService;
     }
 
     /**
@@ -148,6 +153,7 @@ public class SetmealController {
         setmealDto.setSetmealDishes(setmealDishes);
         //设置此套餐 菜品分类的名字
         setmealDto.setCategoryName(category.getName());
+
         return R.success(setmealDto);
     }
 
@@ -175,11 +181,31 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<Setmeal>> list(Setmeal setmeal) {
+    public R<List<SetmealDto>> list(Setmeal setmeal) {
+        Long categoryId = setmeal.getCategoryId();
+        Category category = categoryService.getById(categoryId);
+        String categoryName = category.getName();
         LambdaQueryWrapper<Setmeal> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(Setmeal::getCategoryId, setmeal.getCategoryId());
+        lqw.eq(Setmeal::getCategoryId, categoryId);
+        lqw.eq(Setmeal::getStatus,setmeal.getStatus());
+        lqw.orderByDesc(Setmeal::getUpdateTime);
         List<Setmeal> list = setmealService.list(lqw);
-        return R.success(list);
+        ArrayList<SetmealDto> setmealDtos = new ArrayList<>();
+        for (Setmeal s : list) {
+            SetmealDto setmealDto = new SetmealDto();
+            BeanUtils.copyProperties(s,setmealDto);
+            setmealDto.setCategoryName(categoryName);
+
+            //获取套餐的销售数量
+            LambdaQueryWrapper<OrderDetail> olqw = new LambdaQueryWrapper<>();
+            olqw.eq(OrderDetail::getSetmealId,s.getId());
+            int count = orderDetailService.count(olqw);
+            //设置套餐已售出的数量
+            setmealDto.setSaleNum(count);
+            setmealDtos.add(setmealDto);
+        }
+
+        return R.success(setmealDtos);
 
     }
 }
