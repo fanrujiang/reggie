@@ -108,6 +108,11 @@ public class AddressBookController {
         addressBookService.updateById(addressBook);
         return R.success("地址修改成功");
     }
+    @DeleteMapping
+    public R<String> delete(Long ids){
+        addressBookService.removeById(ids);
+        return R.success("删除成功");
+    }
 
 
 }
