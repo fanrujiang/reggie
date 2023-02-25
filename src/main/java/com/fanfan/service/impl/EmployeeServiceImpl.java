@@ -41,8 +41,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public PageBean page(int page, int pageSize, String name) {
-        PageHelper.startPage(page,pageSize);
-        Page<Employee> p =employeeMapper.findPage(name);
-        return new PageBean(p.getTotal(),p.getResult());
+        PageHelper.startPage(page, pageSize);
+        Page<Employee> p = employeeMapper.findPage(name);
+        return new PageBean(p.getTotal(), p.getResult());
+    }
+
+    /**
+     * 根据username查询用户
+     *
+     * @param username
+     * @return
+     */
+    @Override
+    public Employee getByUserName(String username) {
+        Employee employee = employeeMapper.getByUsername();
+        return employee;
     }
 }

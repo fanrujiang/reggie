@@ -1,17 +1,16 @@
 package com.fanfan.controller;
 
 import com.fanfan.bean.PageBean;
+import com.fanfan.common.CustomException;
 import com.fanfan.common.R;
 import com.fanfan.pojo.Employee;
 import com.fanfan.service.EmployeeService;
-import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -33,7 +32,7 @@ public class EmployeeController {
     @GetMapping("/page")
     public R<PageBean> page(int page, int pageSize, String name) {
 
-        PageBean pageBean =employeeService.page(page,pageSize,name);
+        PageBean pageBean = employeeService.page(page, pageSize, name);
 
         return R.success(pageBean);
     }
@@ -53,7 +52,6 @@ public class EmployeeController {
         Employee emp = employeeService.login(employee);
 
 
-
         if (emp == null) {
             return R.error("登录失败");
         }
@@ -68,6 +66,7 @@ public class EmployeeController {
 
     /**
      * 员工退出
+     *
      * @param request
      * @return
      */
@@ -86,6 +85,11 @@ public class EmployeeController {
      */
     @PostMapping
     public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
+        //Employee aa = employeeService.getByUserName(employee.getUsername());
+        //if (Objects.equals(aa.getUsername(), employee.getUsername())){
+        //    throw new CustomException("账号已重复换个账号吧");
+        //}
+
         Long uuid = (long) UUID.randomUUID().toString().replaceAll("-", "").hashCode();
         System.out.println("uuid =" + uuid);
         employee.setId(uuid);

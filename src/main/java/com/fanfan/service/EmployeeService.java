@@ -22,4 +22,12 @@ public interface EmployeeService {
     void save(Employee employee);
 
     PageBean page(int page, int pageSize,String name);
+
+    /**
+     * 根据username查询用户
+     *
+     * @param username
+     * @return
+     */
+    Employee getByUserName(String username);
 }

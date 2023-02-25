@@ -24,4 +24,7 @@
         </where>
         order by update_time desc
     </select>
+    <select id="getByUsername" resultType="com.fanfan.pojo.Employee">
+        select *from employee where username=#{username}
+    </select>
 </mapper>
