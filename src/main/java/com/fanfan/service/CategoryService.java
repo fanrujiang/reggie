@@ -17,8 +17,24 @@ public interface CategoryService {
 
     /**
      * 根据类型查询分类集合
+     *
      * @param type 类型
      * @return categories
      */
     ArrayList<Category> list(Integer type);
+
+    /**
+     * 判断分类表中名字和排序存在
+     *
+     * @return 存在返回true 不存在返回false
+     */
+    boolean decision(Category category);
+
+    /**
+     * 新增分类
+     *
+     * @param category 分类
+     */
+    void add(Category category);
+
 }

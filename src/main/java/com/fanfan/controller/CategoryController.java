@@ -4,9 +4,7 @@ import com.fanfan.bean.PageBean;
 import com.fanfan.common.R;
 import com.fanfan.pojo.Category;
 import com.fanfan.service.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -35,6 +33,7 @@ public class CategoryController {
 
     /**
      * 根据类型查询分类集合
+     *
      * @param type 类型
      * @return categories
      */
@@ -43,5 +42,11 @@ public class CategoryController {
         ArrayList<Category> categories = categoryService.list(type);
 
         return R.success(categories);
+    }
+
+    @PostMapping
+    public R<String> add(@RequestBody Category category) {
+        categoryService.add(category);
+        return R.success("新增成功");
     }
 }

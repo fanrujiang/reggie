@@ -4,13 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fanfan.mapper.CategoryMapper">
+
     <select id="findPage" resultType="com.fanfan.pojo.Category">
         select *from category
-        order by update_time desc
+        order by sort
     </select>
     <select id="list" resultType="com.fanfan.pojo.Category">
         select *
         from category
         where type = #{type}
+    </select>
+    <select id="getOneByName" resultType="com.fanfan.pojo.Category">
+        select name
+        from category
+        where name = #{name}
+    </select>
+    <select id="getOneBySort" resultType="com.fanfan.pojo.Category">
+        select sort
+        from category
+        where sort = #{sort}
     </select>
 </mapper>
