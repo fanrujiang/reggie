@@ -35,7 +35,7 @@ public class DishServiceImpl implements DishService {
     public PageBean page(int page, int pageSize, String name) {
         PageHelper.startPage(page, pageSize);
         Page<DishDto> p = dishMapper.findPage(name);
-        return new PageBean(p.getTotal(), p.getResult());
+        return new PageBean((int) p.getTotal(), p.getResult());
     }
 
     /**

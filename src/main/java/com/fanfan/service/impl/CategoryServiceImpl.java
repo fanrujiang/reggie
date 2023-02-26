@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
         PageHelper.startPage(page, pageSize);
         Page<Category> p = categoryMapper.findPage();
 
-        return new PageBean(p.getTotal(), p.getResult());
+        return new PageBean((int) p.getTotal(), p.getResult());
     }
 
     /**
