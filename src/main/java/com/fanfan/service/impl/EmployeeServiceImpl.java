@@ -72,4 +72,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.update(employee);
     }
+
+    /**
+     * 根据id查询用户
+     *
+     * @param id 用户id
+     * @return Employee
+     */
+    @Override
+    public Employee getById(Long id) {
+        return employeeMapper.getById(id);
+    }
 }

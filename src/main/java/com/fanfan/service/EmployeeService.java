@@ -8,6 +8,7 @@ public interface EmployeeService {
 
     /**
      * 员工登录
+     *
      * @param employee
      * @return
      */
@@ -16,12 +17,13 @@ public interface EmployeeService {
 
     /**
      * 新增员工
+     *
      * @param employee
      * @return
      */
     void save(Employee employee);
 
-    PageBean page(int page, int pageSize,String name);
+    PageBean page(int page, int pageSize, String name);
 
     /**
      * 根据username查询用户
@@ -33,7 +35,16 @@ public interface EmployeeService {
 
     /**
      * 修改员工信息
+     *
      * @param employee 员工的实体类
      */
     void update(Employee employee);
+
+    /**
+     * 根据id查询用户
+     *
+     * @param id 用户id
+     * @return Employee
+     */
+    Employee getById(Long id);
 }

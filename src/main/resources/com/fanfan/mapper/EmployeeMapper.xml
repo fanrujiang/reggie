@@ -51,10 +51,13 @@
 
 
     <select id="getByUsernameAndPassword" resultType="com.fanfan.pojo.Employee">
-        select *from employee where username=#{username} and password = #{password}
+        select *
+        from employee
+        where username = #{username}
+          and password = #{password}
     </select>
     <select id="findPage" resultType="com.fanfan.pojo.Employee">
-        select *from employee
+        select * from employee
         <where>
             <if test="name != null and name !='' ">
                 and name like concat ('%',#{name},'%')
@@ -63,6 +66,13 @@
         order by update_time desc
     </select>
     <select id="getByUsername" resultType="com.fanfan.pojo.Employee">
-        select *from employee where username=#{username}
+        select *
+        from employee
+        where username = #{username}
+    </select>
+    <select id="getById" resultType="com.fanfan.pojo.Employee">
+        select *
+        from employee
+        where id = #{id}
     </select>
 </mapper>

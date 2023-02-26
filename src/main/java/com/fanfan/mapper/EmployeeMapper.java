@@ -28,4 +28,6 @@ public interface EmployeeMapper {
     Employee getByUsername();
 
     void update(Employee employee);
+
+    Employee getById(Long id);
 }

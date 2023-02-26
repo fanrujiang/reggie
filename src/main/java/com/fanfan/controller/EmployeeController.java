@@ -4,7 +4,6 @@ import com.fanfan.bean.PageBean;
 import com.fanfan.common.R;
 import com.fanfan.pojo.Employee;
 import com.fanfan.service.EmployeeService;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -110,6 +109,12 @@ public class EmployeeController {
         System.out.println("employee = " + employee);
         employeeService.update(employee);
         return R.success("修改成功");
+    }
+
+    @GetMapping("{id}")
+    public R<Employee> getById(@PathVariable Long id) {
+        Employee employee = employeeService.getById(id);
+        return R.success(employee);
     }
 
 
