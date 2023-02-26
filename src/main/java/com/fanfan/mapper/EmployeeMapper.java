@@ -26,4 +26,6 @@ public interface EmployeeMapper {
     Page<Employee> findPage(String name);
 
     Employee getByUsername();
+
+    void update(Employee employee);
 }

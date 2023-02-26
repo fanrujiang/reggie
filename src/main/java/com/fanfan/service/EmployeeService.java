@@ -30,4 +30,10 @@ public interface EmployeeService {
      * @return
      */
     Employee getByUserName(String username);
+
+    /**
+     * 修改员工信息
+     * @param employee 员工的实体类
+     */
+    void update(Employee employee);
 }

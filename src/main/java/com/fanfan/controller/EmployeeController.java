@@ -1,7 +1,6 @@
 package com.fanfan.controller;
 
 import com.fanfan.bean.PageBean;
-import com.fanfan.common.CustomException;
 import com.fanfan.common.R;
 import com.fanfan.pojo.Employee;
 import com.fanfan.service.EmployeeService;
@@ -10,7 +9,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -85,11 +83,6 @@ public class EmployeeController {
      */
     @PostMapping
     public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
-        //Employee aa = employeeService.getByUserName(employee.getUsername());
-        //if (Objects.equals(aa.getUsername(), employee.getUsername())){
-        //    throw new CustomException("账号已重复换个账号吧");
-        //}
-
         Long uuid = (long) UUID.randomUUID().toString().replaceAll("-", "").hashCode();
         System.out.println("uuid =" + uuid);
         employee.setId(uuid);
@@ -104,6 +97,19 @@ public class EmployeeController {
 
         return R.success("添加成功");
 
+    }
+
+    /**
+     * 修改员工
+     *
+     * @param employee 员工的实体类
+     * @return 成功信息;
+     */
+    @PutMapping
+    public R<String> update(@RequestBody Employee employee) {
+        System.out.println("employee = " + employee);
+        employeeService.update(employee);
+        return R.success("修改成功");
     }
 
 
