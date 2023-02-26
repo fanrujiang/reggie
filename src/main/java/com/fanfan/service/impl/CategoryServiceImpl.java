@@ -8,6 +8,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -17,11 +19,29 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
+    /**
+     * 分类的分页查询
+     *
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @Override
     public PageBean page(int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
         Page<Category> p = categoryMapper.findPage();
 
-        return new PageBean(p.getTotal(),p.getResult());
+        return new PageBean(p.getTotal(), p.getResult());
+    }
+
+    /**
+     * 根据类型查询分类集合
+     *
+     * @param type 类型
+     * @return categories
+     */
+    @Override
+    public ArrayList<Category> list(Integer type) {
+        return categoryMapper.list(type);
     }
 }
