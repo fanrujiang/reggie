@@ -18,7 +18,7 @@ logging:
   level:
     org.springframework.jdbc.support.JdbcTransactionManager: debug
 
-mybatis-plus:
+mybatis:
   configuration:
     #指定mybatis输出日志的位置, 输出控制台
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
