@@ -37,4 +37,11 @@ public interface CategoryMapper {
      */
     @Insert("insert into category values (null,#{type},#{name},#{sort},#{createTime},#{createTime},#{updateUser},#{updateUser})")
     void add(Category category);
+
+    /**
+     * 根据id删除分类
+     *
+     * @param id 分类id
+     */
+    void deleteById(Long id);
 }

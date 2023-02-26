@@ -37,4 +37,9 @@ public interface CategoryService {
      */
     void add(Category category);
 
+    /**
+     * 根据id删除分类
+     * @param id 分类id
+     */
+    void deleteById(Long id);
 }

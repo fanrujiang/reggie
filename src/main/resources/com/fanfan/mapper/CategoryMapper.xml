@@ -4,6 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fanfan.mapper.CategoryMapper">
+    <delete id="deleteById">
+        delete from category where id = #{id}
+    </delete>
 
     <select id="findPage" resultType="com.fanfan.pojo.Category">
         select *from category

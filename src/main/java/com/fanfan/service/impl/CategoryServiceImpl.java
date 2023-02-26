@@ -9,6 +9,7 @@ import com.fanfan.service.CategoryService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -81,5 +82,18 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdateUser(currentId);
         category.setCreateTime(LocalDateTime.now());
         categoryMapper.add(category);
+    }
+
+    /**
+     * 根据id删除分类
+     *
+     * @param id 分类id
+     */
+    @Override
+    public void deleteById(Long id) {
+        if (ObjectUtils.isEmpty(id)){
+            throw new CustomException("分类id为空");
+        }
+        categoryMapper.deleteById(id);
     }
 }

@@ -49,4 +49,10 @@ public class CategoryController {
         categoryService.add(category);
         return R.success("新增成功");
     }
+
+    @DeleteMapping
+    public R<String> add(Long id) {
+        categoryService.deleteById(id);
+        return R.success("删除成功");
+    }
 }
