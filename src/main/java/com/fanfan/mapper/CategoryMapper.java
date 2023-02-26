@@ -44,4 +44,10 @@ public interface CategoryMapper {
      * @param id 分类id
      */
     void deleteById(Long id);
+
+    /**
+     * 更新分类
+     * @param category 分类的对象
+     */
+    void update(Category category);
 }

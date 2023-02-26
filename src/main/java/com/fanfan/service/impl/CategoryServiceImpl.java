@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean decision(Category category) {
         String categoryName = category.getName();
-        if (this.getByName(categoryName)!=null) {
+        if (this.getByName(categoryName) != null) {
             return true;
         } else return false;
     }
@@ -75,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void add(Category category) {
-        if (this.decision(category)){
+        if (this.decision(category)) {
             throw new CustomException("名称已存在");
         }
         Long currentId = BaseContext.getCurrentId();
@@ -91,9 +91,24 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void deleteById(Long id) {
-        if (ObjectUtils.isEmpty(id)){
+        if (ObjectUtils.isEmpty(id)) {
             throw new CustomException("分类id为空");
         }
         categoryMapper.deleteById(id);
+    }
+
+    /**
+     * 更新分类
+     *
+     * @param category 分类的对象
+     */
+    @Override
+    public void update(Category category) {
+        if (ObjectUtils.isEmpty(category)) {
+            throw new CustomException("分类对象为null");
+        }
+        category.setUpdateUser(BaseContext.getCurrentId());
+        category.setUpdateTime(LocalDateTime.now());
+        categoryMapper.update(category);
     }
 }

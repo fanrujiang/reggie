@@ -44,15 +44,38 @@ public class CategoryController {
         return R.success(categories);
     }
 
+    /**
+     * 新增分类
+     *
+     * @param category 分类
+     * @return String
+     */
     @PostMapping
     public R<String> add(@RequestBody Category category) {
         categoryService.add(category);
         return R.success("新增成功");
     }
 
+    /**
+     * 根据id删除分类
+     *
+     * @param id 分类id
+     * @return String
+     */
     @DeleteMapping
     public R<String> add(Long id) {
         categoryService.deleteById(id);
         return R.success("删除成功");
+    }
+
+    /**
+     * 更新分类
+     * @param category 分类的对象
+     * @return String
+     */
+    @PutMapping
+    public R<String> update(@RequestBody Category category) {
+        categoryService.update(category);
+        return R.success("更新分类成功");
     }
 }
