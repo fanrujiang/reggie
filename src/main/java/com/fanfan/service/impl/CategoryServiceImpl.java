@@ -57,9 +57,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean decision(Category category) {
         String categoryName = category.getName();
+        Integer sort = category.getSort();
         if (this.getByName(categoryName) != null) {
             return true;
-        } else return false;
+        }
+        return false;
+    }
+
+    private Category getBySort(Integer sort) {
+        return categoryMapper.getOneBySort(sort);
     }
 
 
@@ -76,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void add(Category category) {
         if (this.decision(category)) {
-            throw new CustomException("名称已存在");
+            throw new CustomException("名称或排序已存在");
         }
         Long currentId = BaseContext.getCurrentId();
         category.setUpdateUser(currentId);
@@ -104,9 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void update(Category category) {
-        if (ObjectUtils.isEmpty(category)) {
-            throw new CustomException("分类对象为null");
-        }
+
         category.setUpdateUser(BaseContext.getCurrentId());
         category.setUpdateTime(LocalDateTime.now());
         categoryMapper.update(category);
