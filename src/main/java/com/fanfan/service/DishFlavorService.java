@@ -1,6 +1,6 @@
 package com.fanfan.service;
 
-import com.fanfan.pojo.DishFlavor;
+import com.fanfan.bean.DishFlavor;
 
 import java.util.ArrayList;
 

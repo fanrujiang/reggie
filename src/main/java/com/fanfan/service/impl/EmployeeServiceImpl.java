@@ -3,7 +3,7 @@ package com.fanfan.service.impl;
 import com.fanfan.bean.PageBean;
 import com.fanfan.common.BaseContext;
 import com.fanfan.mapper.EmployeeMapper;
-import com.fanfan.pojo.Employee;
+import com.fanfan.bean.Employee;
 import com.fanfan.service.EmployeeService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;

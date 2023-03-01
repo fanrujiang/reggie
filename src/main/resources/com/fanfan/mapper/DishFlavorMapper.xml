@@ -6,7 +6,7 @@
 <mapper namespace="com.fanfan.mapper.DishFlavorMapper">
 
 <!--    根据菜品id查询口味集合-->
-    <select id="findByDishId" resultType="com.fanfan.pojo.DishFlavor">
+    <select id="findByDishId" resultType="com.fanfan.bean.DishFlavor">
         select * from dish_flavor where dish_id =#{dishId}
     </select>
 </mapper>

@@ -2,7 +2,7 @@ package com.fanfan.controller;
 
 import com.fanfan.bean.PageBean;
 import com.fanfan.common.R;
-import com.fanfan.pojo.Employee;
+import com.fanfan.bean.Employee;
 import com.fanfan.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;

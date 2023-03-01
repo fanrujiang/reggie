@@ -1,7 +1,7 @@
 package com.fanfan.dto;
 
-import com.fanfan.pojo.Dish;
-import com.fanfan.pojo.DishFlavor;
+import com.fanfan.bean.Dish;
+import com.fanfan.bean.DishFlavor;
 import lombok.Data;
 
 import java.util.ArrayList;

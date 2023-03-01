@@ -4,7 +4,7 @@ import com.fanfan.bean.PageBean;
 import com.fanfan.common.BaseContext;
 import com.fanfan.common.CustomException;
 import com.fanfan.mapper.CategoryMapper;
-import com.fanfan.pojo.Category;
+import com.fanfan.bean.Category;
 import com.fanfan.service.CategoryService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;

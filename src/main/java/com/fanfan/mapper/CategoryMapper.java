@@ -1,6 +1,6 @@
 package com.fanfan.mapper;
 
-import com.fanfan.pojo.Category;
+import com.fanfan.bean.Category;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

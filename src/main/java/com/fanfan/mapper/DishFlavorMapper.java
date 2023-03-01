@@ -1,6 +1,6 @@
 package com.fanfan.mapper;
 
-import com.fanfan.pojo.DishFlavor;
+import com.fanfan.bean.DishFlavor;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;

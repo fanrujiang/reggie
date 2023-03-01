@@ -2,10 +2,8 @@ package com.fanfan.service.impl;
 
 import com.fanfan.bean.PageBean;
 import com.fanfan.dto.DishDto;
-import com.fanfan.mapper.DishFlavorMapper;
 import com.fanfan.mapper.DishMapper;
-import com.fanfan.pojo.Dish;
-import com.fanfan.pojo.DishFlavor;
+import com.fanfan.bean.DishFlavor;
 import com.fanfan.service.DishFlavorService;
 import com.fanfan.service.DishService;
 import com.github.pagehelper.Page;

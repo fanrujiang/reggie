@@ -2,7 +2,7 @@ package com.fanfan.controller;
 
 import com.fanfan.bean.PageBean;
 import com.fanfan.common.R;
-import com.fanfan.pojo.Category;
+import com.fanfan.bean.Category;
 import com.fanfan.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 

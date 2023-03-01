@@ -50,13 +50,13 @@
     </update>
 
 
-    <select id="getByUsernameAndPassword" resultType="com.fanfan.pojo.Employee">
+    <select id="getByUsernameAndPassword" resultType="com.fanfan.bean.Employee">
         select *
         from employee
         where username = #{username}
           and password = #{password}
     </select>
-    <select id="findPage" resultType="com.fanfan.pojo.Employee">
+    <select id="findPage" resultType="com.fanfan.bean.Employee">
         select * from employee
         <where>
             <if test="name != null and name !='' ">
@@ -65,12 +65,12 @@
         </where>
         order by update_time desc
     </select>
-    <select id="getByUsername" resultType="com.fanfan.pojo.Employee">
+    <select id="getByUsername" resultType="com.fanfan.bean.Employee">
         select *
         from employee
         where username = #{username}
     </select>
-    <select id="getById" resultType="com.fanfan.pojo.Employee">
+    <select id="getById" resultType="com.fanfan.bean.Employee">
         select *
         from employee
         where id = #{id}

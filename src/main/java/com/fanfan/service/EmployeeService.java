@@ -1,7 +1,7 @@
 package com.fanfan.service;
 
 import com.fanfan.bean.PageBean;
-import com.fanfan.pojo.Employee;
+import com.fanfan.bean.Employee;
 
 public interface EmployeeService {
 

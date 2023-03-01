@@ -1,7 +1,7 @@
 package com.fanfan.service.impl;
 
 import com.fanfan.mapper.DishFlavorMapper;
-import com.fanfan.pojo.DishFlavor;
+import com.fanfan.bean.DishFlavor;
 import com.fanfan.service.DishFlavorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

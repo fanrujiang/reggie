@@ -1,6 +1,6 @@
 package com.fanfan.mapper;
 
-import com.fanfan.pojo.Employee;
+import com.fanfan.bean.Employee;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 
