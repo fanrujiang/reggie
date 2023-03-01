@@ -2,8 +2,10 @@ package com.fanfan.controller;
 
 import com.fanfan.bean.PageBean;
 import com.fanfan.common.R;
+import com.fanfan.dto.SetmealDto;
 import com.fanfan.service.SetmealService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +24,7 @@ public class SetmealController {
 
     /**
      * 套餐分页
+     *
      * @param page
      * @param pageSize
      * @param name
@@ -32,6 +35,17 @@ public class SetmealController {
 
         PageBean pageBean = setmealService.page(page, pageSize, name);
         return R.success(pageBean);
+    }
+
+    /**
+     * 根据id查询一个套餐的所有信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public R<SetmealDto> getById(@PathVariable Long id) {
+        SetmealDto setmealDto = setmealService.getById(id);
+        return R.success(setmealDto);
     }
 
 }

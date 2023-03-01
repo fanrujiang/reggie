@@ -6,7 +6,7 @@
 <mapper namespace="com.fanfan.mapper.SetmealMapper">
 
     <select id="findPage" resultType="com.fanfan.dto.SetmealDto">
-        select s.id,s.name,s.image,s.price,s.status,s.update_time, c.name as 'category_name'
+        select s.*, c.name as 'category_name'
         from setmeal as s
                  inner join category as c on s.category_id = c.id
         <where>
@@ -16,5 +16,11 @@
         </where>
         order by update_time desc
 
+    </select>
+    <select id="getById" resultType="com.fanfan.dto.SetmealDto">
+        select s.*, c.name as 'category_name'
+        from setmeal as s
+                 inner join category as c on s.category_id = c.id
+        where s.id = #{id}
     </select>
 </mapper>

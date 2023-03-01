@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SetmealMapper {
     Page<SetmealDish> findPage(String name);
+
+    SetmealDto getById(Long id);
 }
