@@ -1,6 +1,7 @@
 package com.fanfan.controller;
 
 
+import com.fanfan.bean.Dish;
 import com.fanfan.bean.PageBean;
 import com.fanfan.common.R;
 import com.fanfan.dto.DishDto;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 
 @RequestMapping("/dish")
 @RestController
@@ -46,6 +49,17 @@ public class DishController {
         DishDto dishDto = dishService.getById(id);
 
         return R.success(dishDto);
+    }
+
+    /**
+     * 根据分类查询菜品集合
+     * @param categoryId 分类id
+     * @return 菜品集合
+     */
+    @GetMapping("/list")
+    public R<ArrayList<Dish>> getByCategoryId(Long categoryId) {
+        ArrayList<Dish> dishes = dishService.getByCategoryId(categoryId);
+        return R.success(dishes);
     }
 
 

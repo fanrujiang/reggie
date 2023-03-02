@@ -1,5 +1,6 @@
 package com.fanfan.service.impl;
 
+import com.fanfan.bean.Dish;
 import com.fanfan.bean.PageBean;
 import com.fanfan.dto.DishDto;
 import com.fanfan.mapper.DishMapper;
@@ -55,5 +56,16 @@ public class DishServiceImpl implements DishService {
         dishDto.setFlavors(flavors);
 
         return dishDto;
+    }
+
+    /**
+     * 根据分类查询菜品集合
+     *
+     * @param categoryId 分类id
+     * @return 菜品集合
+     */
+    @Override
+    public ArrayList<Dish> getByCategoryId(Long categoryId) {
+        return dishMapper.getByCategoryId(categoryId);
     }
 }

@@ -23,4 +23,7 @@
         inner join category as b on a.category_id = b.id
         where a.id = #{id}
     </select>
+    <select id="getByCategoryId" resultType="com.fanfan.bean.Dish">
+        select * from dish where category_id = #{categoryId}
+    </select>
 </mapper>
