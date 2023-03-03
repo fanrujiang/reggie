@@ -32,4 +32,10 @@ public interface DishService {
      * @param ids    菜品ids
      */
     void status(int status, String ids);
+
+    /**
+     * 修改菜品信息
+     * @param dishDto 菜品dto
+     */
+    void update(DishDto dishDto);
 }

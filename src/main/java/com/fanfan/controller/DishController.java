@@ -66,8 +66,18 @@ public class DishController {
      */
     @PostMapping("/status/{status}")
     public R<String> status(@PathVariable("status") int status, String ids){
-        System.out.println(status+ids);
         dishService.status(status,ids);
+        return R.success("修改成功");
+    }
+
+    /**
+     * 修改菜品信息
+     * @param dishDto 菜品dto
+     * @return
+     */
+    @PutMapping
+    public R<String> update(@RequestBody DishDto dishDto){
+        dishService.update(dishDto);
         return R.success("修改成功");
     }
 
