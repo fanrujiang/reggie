@@ -44,4 +44,18 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDto.setSetmealDishes(setmealDishes);
         return setmealDto;
     }
+
+    /**
+     * 根据套餐id删除套餐
+     *
+     * @param ids 套餐ids
+     */
+    @Override
+    public void deleteByIds(String ids) {
+        String[] idss = ids.split(",");
+        for (String s : idss) {
+            setmealMapper.deleteById(Long.valueOf(s));
+        }
+
+    }
 }

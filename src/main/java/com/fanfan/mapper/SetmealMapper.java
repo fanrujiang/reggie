@@ -10,4 +10,6 @@ public interface SetmealMapper {
     Page<SetmealDish> findPage(String name);
 
     SetmealDto getById(Long id);
+
+    void deleteById(Long s);
 }

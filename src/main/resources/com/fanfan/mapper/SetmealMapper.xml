@@ -4,6 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fanfan.mapper.SetmealMapper">
+    <delete id="deleteById">
+        delete
+        from setmeal
+        where id = #{id}
+    </delete>
 
     <select id="findPage" resultType="com.fanfan.dto.SetmealDto">
         select s.*, c.name as 'category_name'

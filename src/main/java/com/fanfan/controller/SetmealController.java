@@ -4,10 +4,7 @@ import com.fanfan.bean.PageBean;
 import com.fanfan.common.R;
 import com.fanfan.dto.SetmealDto;
 import com.fanfan.service.SetmealService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 套餐控制器
@@ -48,4 +45,13 @@ public class SetmealController {
         return R.success(setmealDto);
     }
 
+    /**
+     * 根据套餐id删除套餐
+     * @param ids 套餐ids
+     */
+    @DeleteMapping
+    public R<String> deleteByIds(String ids){
+        setmealService.deleteByIds(ids);
+        return R.success("删除成功");
+    }
 }

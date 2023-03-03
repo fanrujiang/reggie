@@ -13,4 +13,10 @@ public interface SetmealService {
      * @return
      */
     SetmealDto getById(Long id);
+
+    /**
+     * 根据套餐id删除套餐
+     * @param ids 套餐ids
+     */
+    void deleteByIds(String ids);
 }
