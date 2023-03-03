@@ -20,4 +20,6 @@ public interface DishMapper {
     DishDto getById(Long id);
 
     ArrayList<Dish> getByCategoryId(Long categoryId);
+
+    void update(Dish dish);
 }

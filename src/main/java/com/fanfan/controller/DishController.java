@@ -7,10 +7,7 @@ import com.fanfan.common.R;
 import com.fanfan.dto.DishDto;
 import com.fanfan.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -61,6 +58,19 @@ public class DishController {
         ArrayList<Dish> dishes = dishService.getByCategoryId(categoryId);
         return R.success(dishes);
     }
+
+    /**
+     * 修改菜品的启售停售
+     * @param status 状态
+     * @param ids 菜品ids
+     */
+    @PostMapping("/status/{status}")
+    public R<String> status(@PathVariable("status") int status, String ids){
+        System.out.println(status+ids);
+        dishService.status(status,ids);
+        return R.success("修改成功");
+    }
+
 
 
 }

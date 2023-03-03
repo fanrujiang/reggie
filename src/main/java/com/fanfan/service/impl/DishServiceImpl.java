@@ -2,6 +2,7 @@ package com.fanfan.service.impl;
 
 import com.fanfan.bean.Dish;
 import com.fanfan.bean.PageBean;
+import com.fanfan.common.BaseContext;
 import com.fanfan.dto.DishDto;
 import com.fanfan.mapper.DishMapper;
 import com.fanfan.bean.DishFlavor;
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -67,5 +69,24 @@ public class DishServiceImpl implements DishService {
     @Override
     public ArrayList<Dish> getByCategoryId(Long categoryId) {
         return dishMapper.getByCategoryId(categoryId);
+    }
+
+    /**
+     * 修改菜品的启售停售
+     *
+     * @param status 状态
+     * @param ids    菜品ids
+     */
+    @Override
+    public void status(int status, String ids) {
+        String[] split = ids.split(",");
+        for (String id : split) {
+            Dish dish = new Dish();
+            dish.setId(Long.valueOf(id));
+            dish.setStatus(status);
+            dish.setUpdateTime(LocalDateTime.now());
+            dish.setUpdateUser(BaseContext.getCurrentId());
+            dishMapper.update(dish);
+        }
     }
 }

@@ -19,8 +19,17 @@ public interface DishService {
 
     /**
      * 根据分类查询菜品集合
+     *
      * @param categoryId 分类id
      * @return 菜品集合
      */
     ArrayList<Dish> getByCategoryId(Long categoryId);
+
+    /**
+     * 修改菜品的启售停售
+     *
+     * @param status 状态
+     * @param ids    菜品ids
+     */
+    void status(int status, String ids);
 }
