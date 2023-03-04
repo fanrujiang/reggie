@@ -1,10 +1,12 @@
 package com.fanfan.service.impl;
 
+import com.fanfan.bean.Dish;
 import com.fanfan.bean.PageBean;
 import com.fanfan.common.BaseContext;
 import com.fanfan.common.CustomException;
 import com.fanfan.mapper.CategoryMapper;
 import com.fanfan.bean.Category;
+import com.fanfan.mapper.DishMapper;
 import com.fanfan.service.CategoryService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -18,9 +20,11 @@ import java.util.ArrayList;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
+    private final DishMapper dishMapper;
 
-    public CategoryServiceImpl(CategoryMapper categoryMapper) {
+    public CategoryServiceImpl(CategoryMapper categoryMapper, DishMapper dishMapper) {
         this.categoryMapper = categoryMapper;
+        this.dishMapper = dishMapper;
     }
 
     /**
@@ -97,6 +101,10 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void deleteById(Long id) {
+        ArrayList<Dish> byCategoryId = dishMapper.getByCategoryId(id);
+        if (byCategoryId.size()>0){
+            throw new CustomException("该分类下有"+byCategoryId.size()+"个菜品");
+        }
         if (ObjectUtils.isEmpty(id)) {
             throw new CustomException("分类id为空");
         }
