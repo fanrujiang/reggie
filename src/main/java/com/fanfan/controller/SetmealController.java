@@ -15,6 +15,8 @@ import com.fanfan.service.SetmealDishService;
 import com.fanfan.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +83,7 @@ public class SetmealController {
      * @return
      */
     @PostMapping
+    @CacheEvict(value = "setmealCache",allEntries = true) //清除setmealCache名称下,所有的缓存数据
     public R<String> save(@RequestBody SetmealDto setmealDto) {
         log.info("套餐信息{}", setmealDto);
         setmealService.saveWithDish(setmealDto);
@@ -96,6 +99,7 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/status/0")
+    @CacheEvict(value = "setmealCache",allEntries = true) //清除setmealCache名称下,所有的缓存数据
     public R<String> offStatus(String ids) {
         log.info(ids);
         setmealService.offStatus(ids);
@@ -109,6 +113,7 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/status/1")
+    @CacheEvict(value = "setmealCache",allEntries = true) //清除setmealCache名称下,所有的缓存数据
     public R<String> onStatus(String ids) {
         log.info(ids);
         setmealService.onStatus(ids);
@@ -122,6 +127,7 @@ public class SetmealController {
      * @return
      */
     @DeleteMapping
+    @CacheEvict(value = "setmealCache",allEntries = true) //清除setmealCache名称下,所有的缓存数据
     public R<String> delete(String ids) {
         log.info(ids);
         setmealService.delete(ids);
@@ -181,6 +187,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache",key = "#setmeal.categoryId + '_' + #setmeal.status")
     public R<List<SetmealDto>> list(Setmeal setmeal) {
         Long categoryId = setmeal.getCategoryId();
         Category category = categoryService.getById(categoryId);
