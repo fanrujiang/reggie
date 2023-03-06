@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -125,11 +126,14 @@ public class DishController {
      */
     @PutMapping
     public R<String> update(@RequestBody DishDto dishDto) {
-
-        dishService.updateWithFlavor(dishDto);
-        //清理某个分类下面的菜品缓存数据
         String key = "dish_" + dishDto.getCategoryId() + "_1";
         redisTemplate.delete(key);
+        Long categoryId = dishService.getById(dishDto.getId()).getCategoryId();
+        if (!Objects.equals(categoryId, dishDto.getCategoryId())) {
+            redisTemplate.delete("dish_" + categoryId + "_1");
+        }
+        dishService.updateWithFlavor(dishDto);
+
         return R.success("修改成功");
     }
 
@@ -137,9 +141,6 @@ public class DishController {
     @PostMapping("/status/{status}")
     public R<String> status(@PathVariable("status") int status, String ids) {
         dishService.status(status, ids);
-        //清理所有菜品的缓存数据
-        Set keys = redisTemplate.keys("dish_*"); //获取所有以dish_xxx开头的key
-        redisTemplate.delete(keys); //删除这些key
         return R.success("修改成功");
     }
 
