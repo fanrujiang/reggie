@@ -13,6 +13,8 @@ import com.fanfan.service.CategoryService;
 import com.fanfan.service.OrderDetailService;
 import com.fanfan.service.SetmealDishService;
 import com.fanfan.service.SetmealService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @RequestMapping("/setmeal")
+@Api(tags = "套餐相关接口")
 public class SetmealController {
 
     private final SetmealService setmealService;
@@ -51,6 +54,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/page")
+    @ApiOperation(value = "套餐分页查询接口")
     public R<Page> page(PageParam pageParam) {
         LambdaQueryWrapper<Setmeal> lqw = new LambdaQueryWrapper<>();
         //设置条件
@@ -84,6 +88,7 @@ public class SetmealController {
      */
     @PostMapping
     @CacheEvict(value = "setmealCache",allEntries = true) //清除setmealCache名称下,所有的缓存数据
+    @ApiOperation(value = "新增套餐接口")
     public R<String> save(@RequestBody SetmealDto setmealDto) {
         log.info("套餐信息{}", setmealDto);
         setmealService.saveWithDish(setmealDto);
@@ -100,6 +105,7 @@ public class SetmealController {
      */
     @PostMapping("/status/0")
     @CacheEvict(value = "setmealCache",allEntries = true) //清除setmealCache名称下,所有的缓存数据
+    @ApiOperation(value = "停售套餐接口")
     public R<String> offStatus(String ids) {
         log.info(ids);
         setmealService.offStatus(ids);
@@ -114,6 +120,7 @@ public class SetmealController {
      */
     @PostMapping("/status/1")
     @CacheEvict(value = "setmealCache",allEntries = true) //清除setmealCache名称下,所有的缓存数据
+    @ApiOperation(value = "启售套餐接口")
     public R<String> onStatus(String ids) {
         log.info(ids);
         setmealService.onStatus(ids);
@@ -128,6 +135,7 @@ public class SetmealController {
      */
     @DeleteMapping
     @CacheEvict(value = "setmealCache",allEntries = true) //清除setmealCache名称下,所有的缓存数据
+    @ApiOperation(value = "删除套餐接口")
     public R<String> delete(String ids) {
         log.info(ids);
         setmealService.delete(ids);
@@ -141,6 +149,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("{id}")
+    @ApiOperation(value = "根据id查询套餐接口")
     public R<SetmealDto> getById(@PathVariable("id") Long id) {
         //根据id查询当前套餐
         Setmeal setmeal = setmealService.getById(id);
@@ -175,6 +184,7 @@ public class SetmealController {
      * @return
      */
     @PutMapping
+    @ApiOperation(value = "修改套餐接口")
     public R<String> update(@RequestBody SetmealDto setmealDto) {
         setmealService.updateSetmeal(setmealDto);
         return R.success("修改成功");
@@ -188,6 +198,7 @@ public class SetmealController {
      */
     @GetMapping("/list")
     @Cacheable(value = "setmealCache",key = "#setmeal.categoryId + '_' + #setmeal.status")
+    @ApiOperation(value = "套餐条件查询接口")
     public R<List<SetmealDto>> list(Setmeal setmeal) {
         Long categoryId = setmeal.getCategoryId();
         Category category = categoryService.getById(categoryId);

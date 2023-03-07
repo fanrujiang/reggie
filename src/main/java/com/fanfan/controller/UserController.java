@@ -6,6 +6,8 @@ import com.fanfan.bean.UserInfo;
 import com.fanfan.common.R;
 import com.fanfan.service.UserService;
 import com.fanfan.utils.ValidateCodeUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
@@ -18,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RestController
 @RequestMapping("/user")
+@Api(tags = "用户相关接口")
 public class UserController {
     private UserService userService;
     private RedisTemplate redisTemplate;
@@ -34,8 +37,8 @@ public class UserController {
      * @param phone
      * @return
      */
-
     @GetMapping("/code")
+    @ApiOperation(value = "给用户发送验证码")
     public R<String> getCode(String phone, HttpSession session) {
 
         if (ObjectUtils.isEmpty(phone)) {
@@ -66,6 +69,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
+    @ApiOperation(value = "用户登录")
     public R<User> login(@RequestBody Map map, HttpSession session) {
         log.info(map.toString());
         //获取手机号
@@ -109,6 +113,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/loginout")
+    @ApiOperation(value = "用户退出登录")
     public R<String> loginOut(HttpSession session) {
         session.removeAttribute("user");
         return R.success("退出成功");
